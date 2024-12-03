@@ -1,5 +1,6 @@
 use std::time::Duration;
 
+use codec::{Decode, Encode};
 use serde::{Deserialize, Serialize};
 
 /// State machine of party involved in round-based protocol
@@ -118,11 +119,12 @@ pub trait StateMachine {
 }
 
 /// Represent a message transmitting between parties on wire
-#[derive(Clone, Debug, Serialize, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Encode, Decode, Serialize, Deserialize, PartialEq)]
 pub struct Msg<B> {
     /// Index of the sender
     ///
     /// Lies in range `[1; n]` where `n` is number of parties involved in computation
+    #[codec(compact)]
     pub sender: u16,
     /// Index of receiver
     ///
